@@ -1,66 +1,63 @@
-const Hapi = require('@hapi/hapi');
-const Nes = require('@hapi/nes');
-const Path = require('path');
-var Inert = require('inert');
+const http = require('http')
+const app = require('./app')
 
-const server = new Hapi.Server({
-    port: 5000,
-    routes: {
-        files: {
-            relativeTo: Path.join(__dirname, 'view')
-        }
+const normalizePort = val => {
+    const port = parseInt(val, 10)
+
+    if (isNaN(port)) {
+        return val
     }
-});
+    if (port >= 0) {
+        return port
+    }
+    return false
+}
+const port = normalizePort(process.env.PORT || '3000')
+app.set('port', port)
 
-const history = [];
+const errorHandler = error => {
+    if (error.syscall !== 'listen') {
+        throw error
+    }
+    const address = server.address()
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges.')
+            process.exit(1)
+            break
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use.')
+            process.exit(1)
+            break
+        default:
+            throw error
+    }
+}
 
-const start = async() => {
+const server = http.createServer(app)
 
-    await server.register([Nes, Inert]);
-
-    server.route({
-        method: 'GET',
-        path: '/{param*}',
-        handler: {
-
-            directory: { path: '.' }
-        }
-    });
-
-    server.route({
-        method: 'POST',
-        path: '/message',
-        config: {
-            id: 'message',
-            handler: (request, h) => {
-                const message = request.payload.message;
-                console.log(`Message received: ${message}`);
-                history.push(message);
-
-                server.publish("/message", { message }); // publish the message to the clients
-                return true;
-            }
-        }
-    });
-
-    server.route({
-        method: 'POST',
-        path: '/history',
-        config: {
-            id: 'history',
-            handler: (request, h) => {
-                return history;
-            }
-        }
-    });
-
-    server.subscription('/message'); // declaring the subscription path
+server.on('error', errorHandler)
+server.on('listening', () => {
+    const address = server.address()
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port
+    console.log('Listening on ' + bind)
+})
 
 
-    await server.start();
-    server.broadcast('hi');
+// Web sockets
+const io = require('socket.io')(server)
 
-    // console.log('server', server.eachSocket());
-};
+io.sockets.on('connection', (socket) => {
+    console.log('Client connected: ' + socket.id)
 
-start();
+    socket.on('mouse', (data) => socket.broadcast.emit('mouse', data))
+
+    socket.on('disconnect', () => console.log('Client has disconnected'))
+
+    socket.on('chat', message => {
+        console.log('Message received from client ->', message);
+    })
+})
+
+server.listen(port)
