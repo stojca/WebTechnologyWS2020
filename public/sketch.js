@@ -8,7 +8,7 @@ function setup() {
     centerCanvas()
     cv.background(255, 255, 255)
 
-    socket = io.connect('http://localhost:3000')
+    socket = io.connect('http://localhost:8080')
 
     socket.on('mouse', data => {
         stroke(data.color)

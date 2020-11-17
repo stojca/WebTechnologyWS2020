@@ -39,6 +39,17 @@
             </form>
         </div>
     </div>
+
+    <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);">
+        <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);" multiple />
+        <label for="filesfld" id="fileslbl"
+        ondragover="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
+        ondragenter="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
+        ondragleave="stopDefault(event);dragLeave(this);"
+        ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">Click to choose images or drag-n-drop them here</label>
+    </form>
+    <div style="text-align: left;"><div id="progress"></div></div>
+    
     <script type="text/javascript" src="scripts.js"></script>
 </body>
 

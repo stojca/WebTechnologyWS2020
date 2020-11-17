@@ -65,6 +65,39 @@ body {
     margin: 0 auto;
 }
 
+#filesfrm {
+    position: absolute;
+    bottom: 20px;
+    color: white;
+ }
+
+#fileslbl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25vh;
+    background-color: white;
+    color: black;
+    padding: 16px;
+    text-align: center;
+    transition: .5s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+}
+#filesfld {
+    display: none;
+}
+#progress {
+    width: 0;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 25px;
+    padding: 0 5px;
+}
+
 .chat-input {
     width: 200px;
     height: 35px;
