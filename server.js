@@ -1,6 +1,9 @@
 const http = require('http')
-const app = require('./app')
+const express = require("express");
+const upload = require("express-fileupload");
+const path = require("path");
 
+const app = express();
 const normalizePort = val => {
     const port = parseInt(val, 10)
 
@@ -43,6 +46,13 @@ server.on('listening', () => {
     const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port
     console.log('Listening on ' + bind)
 })
+
+app.use(express.json());
+app.use(express.urlencoded( { extended: false } )); // this is to handle URL encoded data
+app.use(upload());
+
+// enable static files pointing to the folder "public"
+app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/upload", function(request, response) {
     var images = new Array();
