@@ -6,7 +6,7 @@ module.exports = function(sequelize,DataTypes){
             primaryKey: true,
             autoIncrement: true
             },
-        text: Sequelize.STRING,
+        message_text: Sequelize.STRING,
     })
     return message;
 };
