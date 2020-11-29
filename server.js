@@ -100,7 +100,12 @@ app.get("/history",function(req,res){
     });
 });
 
-
+app.post('/message', function(req, res)
+{
+          message.create({
+            message_text: req.body['message_text'],
+        });
+});
 // Web sockets
 const io = require('socket.io')(server)
 
