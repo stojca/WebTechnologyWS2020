@@ -2,8 +2,16 @@ const http = require('http')
 const express = require("express");
 const upload = require("express-fileupload");
 const path = require("path");
+const Sequelize = require('sequelize');
+const db = require('./db.js');
+db.sequelize.sync();
+
+const message = require(path.join(__dirname, '/message.js'))(db.sequelize, Sequelize.DataTypes)
+
+message.sync();
 
 const app = express();
+
 const normalizePort = val => {
     const port = parseInt(val, 10)
 
@@ -54,6 +62,7 @@ app.use(upload());
 // enable static files pointing to the folder "public"
 app.use(express.static(path.join(__dirname, "public")));
 
+//upload photo 
 app.post("/upload", function(request, response) {
     var images = new Array();
     if(request.files) {
@@ -81,7 +90,15 @@ app.post("/upload", function(request, response) {
     setTimeout(function(){response.json(images);}, 1000);
 });
 
+//message history
 
+app.get("/history",function(req,res){
+   
+    db.message.findAll().then(function(history){
+
+        res.send(history);
+    });
+});
 
 
 // Web sockets
