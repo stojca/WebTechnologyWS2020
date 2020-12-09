@@ -1,7 +1,7 @@
 {
-    "name": "socketio-drawing",
+    "name": "drawing-app",
     "version": "1.0.0",
-    "description": "A realtime drawing app using socketIO",
+    "description": "A realtime drawing app using WebSockets",
     "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,6 @@
     "author": "Mirza Kabiljagic",
     "license": "",
     "keywords": [
-        "socket io",
         "drawing",
         "javascript",
         "sockets"
@@ -21,8 +20,9 @@
         "express": "^4.16.4",
         "express-fileupload": "^1.2.0",
         "mysql2": "^2.2.5",
+        "nodemon": "^2.0.6",
         "p5": "^1.0.0",
         "sequelize": "^6.3.5",
-        "socket.io": "^2.2.0"
+        "ws": "^7.4.1"
     }
 }
