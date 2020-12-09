@@ -16,6 +16,17 @@
 
   let ws;
   function showMessage(message) {
+    
+    if(message === "New user has joined the chat") {
+      showNewUser();
+      return;
+    }
+
+    if(message === "close") {
+      showUserLeft();
+      return;
+    }
+
     const img = document.createElement("img");
     img.src = "./assets/imgs/pic.png";
     img.alt = "Avatar";
@@ -67,6 +78,19 @@
     ws.onclose = function () {
       ws = null;
     };
+  }
+
+  function showUserLeft() {
+    const div = document.createElement("div");
+    div.classList.add("center");
+
+    const p = document.createElement("paragraph");
+    p.innerHTML += `<em>A user has left the chat</em>`;
+    p.style.color = "Red";
+    const hr = document.createElement("hr");
+    div.appendChild(p);
+    document.querySelector(".chat-history").appendChild(div);
+    document.querySelector(".chat-history").appendChild(hr);
   }
 
   function showNewUser() {

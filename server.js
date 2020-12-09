@@ -115,9 +115,14 @@ wss.on("connection", function connection(ws) {
         client.send(data);
       }
     });
+  }); 
+  ws.on("close", function closing() {
+    wss.clients.forEach(function each(client) {
+      if (client != ws && client.readyState == WebSocket.OPEN) {
+        client.send("close");
+      }
+    });
   });
 });
-
-
 
 server.listen(port);
