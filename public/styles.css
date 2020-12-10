@@ -296,3 +296,9 @@ p { margin: 0; }
 	font-style: italic;	
 	margin: 0 0 0 80px;
 }
+
+#canvas {
+    display: block;
+    background-color: white;
+    justify-content: center;
+}

@@ -16,17 +16,15 @@
 
   let ws;
   function showMessage(message) {
-    
-    if(message === "New user has joined the chat") {
+    if (message === "New user has joined the chat") {
       showNewUser();
       return;
     }
 
-    if(message === "close") {
+    if (message === "close") {
       showUserLeft();
       return;
     }
-
     const img = document.createElement("img");
     img.src = "./assets/imgs/pic.png";
     img.alt = "Avatar";
@@ -73,6 +71,9 @@
       showNewUser();
     };
     ws.onmessage = ({ data }) => {
+      if (data.includes("offsetX")) {
+        return;
+      }
       showMessage(data);
     };
     ws.onclose = function () {
@@ -122,7 +123,7 @@
       if (e.key === "Enter") {
         e.preventDefault();
         console.log(message.value);
-        handleChatMessage(event);
+        handleChatMessage(e);
       }
     });
 
