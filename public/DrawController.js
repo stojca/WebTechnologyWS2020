@@ -20,17 +20,24 @@ let ws;
   function init() {
     ws = new WebSocket("ws://localhost:3000");
     ws.onmessage = ({ data }) => {
+      //console.log(data);
       if (data === "New user has joined the chat" || data === "close") {
         return;
       }
-      e = JSON.parse(data);
-      context.lineTo(e.offsetX, e.offsetY);
-      context.stroke();
-      context.beginPath();
-      context.arc(e.offsetX, e.offsetY, radius, start, end);
-      context.fill();
-      context.beginPath();
-      context.moveTo(e.offsetX, e.offsetY);
+      if (data === "true" || data === "false") {
+        var isTrueSet = data === "true";
+        console.log(isTrueSet);
+      }
+      if (!isTrueSet) {
+        e = JSON.parse(data);
+        context.lineTo(e.offsetX, e.offsetY);
+        context.stroke();
+        context.beginPath();
+        context.arc(e.offsetX, e.offsetY, radius, start, end);
+        context.fill();
+        context.beginPath();
+        context.moveTo(e.offsetX, e.offsetY);
+      }
     };
   }
 
@@ -59,11 +66,13 @@ var putPoint = function (e) {
 
 var engage = function (e) {
   dragging = true;
+  ws.send(dragging);
   putPoint(e);
 };
 
 var disengage = function () {
   dragging = false;
+  ws.send(dragging);
   context.beginPath();
 };
 

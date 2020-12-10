@@ -71,7 +71,7 @@
       showNewUser();
     };
     ws.onmessage = ({ data }) => {
-      if (data.includes("offsetX")) {
+      if (data.includes("offsetX") || data.includes("true") || data.includes("false")) {
         return;
       }
       showMessage(data);
