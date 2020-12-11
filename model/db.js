@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const path = require("path");
 
-const sequelize = new Sequelize('webt', '', '', {
+const sequelize = new Sequelize('webt', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql',
    // operatorsAliases: false,

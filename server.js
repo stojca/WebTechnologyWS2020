@@ -23,10 +23,10 @@ app.set("port", port);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 const Sequelize = require('sequelize');
-const db = require('./db.js');
+const db = require('./model/db.js');
 db.sequelize.sync();
 
-const message = require(path.join(__dirname, '/message.js'))(db.sequelize, Sequelize.DataTypes)
+const message = require(path.join(__dirname, './model/message.js'))(db.sequelize, Sequelize.DataTypes)
 
 message.sync();
 
@@ -62,8 +62,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // this is to handle URL encoded data
 app.use(upload());
 
-// enable static files pointing to the folder "public"
-app.use(express.static(path.join(__dirname, "public")));
+// enable static files pointing to the folder "view"
+app.use(express.static(path.join(__dirname, "view")));
+app.use(express.static(path.join(__dirname, "controller")));
+
 
 //upload photo
 app.post("/upload", function (request, response) {
@@ -80,7 +82,7 @@ app.post("/upload", function (request, response) {
       var file = arr[i];
       if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
         images[i] = "/" + file.name;
-        file.mv("./public" + images[i], function (err) {
+        file.mv("./view/" + images[i], function (err) {
           if (err) {
             console.log(err);
           }
