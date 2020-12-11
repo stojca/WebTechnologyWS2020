@@ -22,13 +22,13 @@ const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-//const Sequelize = require('sequelize');
-//const db = require('./db.js');
-//db.sequelize.sync();
+const Sequelize = require('sequelize');
+const db = require('./db.js');
+db.sequelize.sync();
 
-//const message = require(path.join(__dirname, '/message.js'))(db.sequelize, Sequelize.DataTypes)
+const message = require(path.join(__dirname, '/message.js'))(db.sequelize, Sequelize.DataTypes)
 
-//message.sync();
+message.sync();
 
 const errorHandler = (error) => {
   if (error.syscall !== "listen") {
