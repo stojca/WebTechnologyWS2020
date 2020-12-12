@@ -18,10 +18,16 @@ const normalizePort = (val) => {
 
 const app = express();
 
+
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
+
+//server
 const server = http.createServer(app);
+
+//web socket server
 const wss = new WebSocket.Server({ server });
+
 const Sequelize = require('sequelize');
 const db = require('./model/db.js');
 db.sequelize.sync();
@@ -58,58 +64,6 @@ server.on("listening", () => {
   console.log("Listening on " + bind);
 });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false })); // this is to handle URL encoded data
-app.use(upload());
-
-// enable static files pointing to the folder "view"
-app.use(express.static(path.join(__dirname, "view")));
-app.use(express.static(path.join(__dirname, "controller")));
-
-
-//upload photo
-app.post("/upload", function (request, response) {
-  var images = new Array();
-  if (request.files) {
-    var arr;
-    if (Array.isArray(request.files.filesfld)) {
-      arr = request.files.filesfld;
-    } else {
-      arr = new Array(1);
-      arr[0] = request.files.filesfld;
-    }
-    for (var i = 0; i < arr.length; i++) {
-      var file = arr[i];
-      if (file.mimetype.substring(0, 5).toLowerCase() == "image") {
-        images[i] = "/" + file.name;
-        file.mv("./view/" + images[i], function (err) {
-          if (err) {
-            console.log(err);
-          }
-        });
-      }
-    }
-  }
-  // give the server a second to write the files
-  setTimeout(function () {
-    response.json(images);
-  }, 1000);
-});
-
-//message history
-
-app.get("/history", function (req, res) {
-  db.message.findAll().then(function (history) {
-    res.send(history);
-  });
-});
-
-app.post("/message", function (req, res) {
-  message.create({
-    message_text: req.body["message_text"],
-  });
-});
-
 wss.on("connection", function connection(ws) {
   ws.on("message", function incoming(data) {
     wss.clients.forEach(function each(client) {
@@ -117,7 +71,7 @@ wss.on("connection", function connection(ws) {
         client.send(data);
       }
     });
-  }); 
+  });
   ws.on("close", function closing() {
     wss.clients.forEach(function each(client) {
       if (client != ws && client.readyState == WebSocket.OPEN) {
@@ -128,3 +82,35 @@ wss.on("connection", function connection(ws) {
 });
 
 server.listen(port);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false })); // this is to handle URL encoded data
+app.use(upload());
+
+// enable static files pointing to the folder "view"
+app.use(express.static(path.join(__dirname, "view")));
+app.use(express.static(path.join(__dirname, "controller")));
+
+
+const {upload_photo} = require('./controller/upload')
+
+//upload photo
+app.post("/upload", function (request, response) {
+  upload_photo(request,response);
+});
+
+//message history
+app.get("/history", function (req, res) {
+  //TODO move into controller when adapt db
+  db.message.findAll().then(function (history) {
+    res.send(history);
+  });
+});
+
+app.post("/message", function (req, res) {
+  //TODO move into controller when adapt db
+  message.create({
+    message_text: req.body["message_text"],
+  });
+});
+
