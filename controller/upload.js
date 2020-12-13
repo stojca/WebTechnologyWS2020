@@ -26,3 +26,18 @@ module.exports.upload_photo = function (request, response)
         response.json(images);
     }, 1000);
 }
+
+function showDragAndDropWindos()
+{
+    var visibility = document.getElementById("filesfrm").style.visibility;
+
+    if(visibility == 'visible')
+        document.getElementById("filesfrm").style.visibility = "hidden";
+    else
+        document.getElementById("filesfrm").style.visibility = "visible";
+}
+
+function hideDragAndDrop()
+{
+    document.getElementById("filesfrm").style.visibility = "hidden";
+}

@@ -153,6 +153,9 @@ function addFilesAndSubmit(event) {
   submitFilesForm(document.getElementById("filesfrm"));
 }
 function submitFilesForm(form) {
+
+  document.getElementById("filesfrm").style.visibility = "hidden";
+
   var label = document.getElementById("fileslbl");
   dragOver(label, "Uploading images..."); // set the drop zone text and styling
   var fd = new FormData();

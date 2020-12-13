@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700">
-
+    <script type="text/javascript" src="upload.js"></script>
 
 </head>
 
@@ -19,7 +19,7 @@
 
 
     <div id="live-chat">
-        <header class="clearfix">
+        <header id="header_chat" class="clearfix" onclick="hideDragAndDrop()">
             <h4>Random User</h4>
         </header>
         <div class="chat">
@@ -31,6 +31,8 @@
                     <input id="msg-input" type="text" placeholder="Enter a message..." autofocus>
                     <input type="hidden">
                     <i id="send" class="fas fa-share send"></i>
+                    <i class="fa fa-image" onclick="showDragAndDropWindos()"></i>
+                    <i class="fas fa-map-marker-alt"></i>
                 </fieldset>
             </form>
 
@@ -38,7 +40,7 @@
     </div>
 
 
-    <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);">
+    <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);" style="visibility:hidden;">
         <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
             multiple />
         <label for="filesfld" id="fileslbl"
