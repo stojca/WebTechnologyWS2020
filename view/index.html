@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script type="text/javascript" src="upload.js"></script>
 
 </head>
@@ -23,9 +24,18 @@
             <h4>Random User</h4>
         </header>
         <div class="chat">
+
             <div class="chat-history">
+                <div class="d-flex justify-content-center">
+
+                    <div id="progress" class="spinner-border" role="status" style="display: none; z-index: 1000">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                </div>
             </div>
             <hr>
+
             <form id="submit-form">
                 <fieldset>
                     <input id="msg-input" type="text" placeholder="Enter a message..." autofocus>
@@ -50,9 +60,6 @@
             ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">Click to choose images or drag-n-drop
             them here</label>
     </form>
-    <div style="text-align: left;">
-        <div id="progress"></div>
-    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script type="text/javascript" src="client.js"></script>

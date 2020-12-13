@@ -89,15 +89,15 @@ body {
 #filesfld {
     display: none;
 }
-#progress {
-    width: 0;
-    background-color: blue;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 25px;
-    padding: 0 5px;
-}
+/*#progress {*/
+/*    width: 0;*/
+/*    background-color: blue;*/
+/*    color: white;*/
+/*    font-weight: bold;*/
+/*    font-size: 14px;*/
+/*    line-height: 25px;*/
+/*    padding: 0 5px;*/
+/*}*/
 
 .chat-input {
     width: 200px;
@@ -158,9 +158,9 @@ img {
     border: 0;
     display: block;
     height: auto;
-    max-width: 15%;
-    position: absolute;
-    right: 25px;
+    max-width: 100%;
+    /*position: absolute;*/
+    /*right: 25px;*/
 }
 
 input {

@@ -168,12 +168,14 @@ function submitFilesForm(form) {
   if (x.upload) {
     x.upload.addEventListener("progress", function (event) {
       var percentage = parseInt((event.loaded / event.total) * 100);
-      progress.innerText = progress.style.width = percentage + "%";
+      //progress.innerText = progress.style.width = percentage + "%";
+      progress.style.display = 'block'; //'hidden'
     });
   }
   x.onreadystatechange = function () {
     if (x.readyState == 4) {
-      progress.innerText = progress.style.width = "";
+      //progress.innerText = progress.style.width = "";
+      progress.style.display = 'none';
       form.filesfld.value = "";
       dragLeave(label); // this will reset the text and styling of the drop zone
       if (x.status == 200) {
