@@ -3,6 +3,7 @@ const express = require("express");
 const upload = require("express-fileupload");
 const path = require("path");
 const WebSocket = require("ws");
+var userRoutes = require('./router/users')
 
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -28,13 +29,13 @@ const server = http.createServer(app);
 //web socket server
 const wss = new WebSocket.Server({ server });
 
-const Sequelize = require('sequelize');
-const db = require('./model/db.js');
-db.sequelize.sync();
-
-const message = require(path.join(__dirname, './model/message.js'))(db.sequelize, Sequelize.DataTypes)
-
-message.sync();
+// const Sequelize = require('sequelize');
+// const db = require('./model/db.js');
+// db.sequelize.sync();
+//
+// const message = require(path.join(__dirname, './model/message.js'))(db.sequelize, Sequelize.DataTypes)
+//
+// message.sync();
 
 const errorHandler = (error) => {
   if (error.syscall !== "listen") {
@@ -87,30 +88,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // this is to handle URL encoded data
 app.use(upload());
 
-// enable static files pointing to the folder "view"
+// enable static files pointing to the folder "view,controller"
 app.use(express.static(path.join(__dirname, "view")));
 app.use(express.static(path.join(__dirname, "controller")));
+app.use('/user/',userRoutes);
 
-
-const {upload_photo} = require('./controller/upload')
+//const {upload_photo} = require('./controller/upload')
 
 //upload photo
-app.post("/upload", function (request, response) {
-  upload_photo(request,response);
-});
+// app.post("/upload", function (request, response) {
+//   upload_photo(request,response);
+// });
 
 //message history
-app.get("/history", function (req, res) {
-  //TODO move into controller when adapt db
-  db.message.findAll().then(function (history) {
-    res.send(history);
-  });
-});
+// app.get("/history", function (req, res) {
+//
+//   db.message.findAll().then(function (history) {
+//     res.send(history);
+//   });
+// });
+//
+// app.post("/message", function (req, res) {
+//
+//   message.create({
+//     message_text: req.body["message_text"],
+//   });
+// });
 
-app.post("/message", function (req, res) {
-  //TODO move into controller when adapt db
-  message.create({
-    message_text: req.body["message_text"],
-  });
-});
-
+module.exports = app;
