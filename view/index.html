@@ -50,7 +50,7 @@
     </div>
 
 
-    <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);" style="visibility:hidden;">
+    <form id="filesfrm" action="/user/upload" method="post" onsubmit="return submitFilesForm(this);" style="visibility:hidden;">
         <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
             multiple />
         <label for="filesfld" id="fileslbl"
