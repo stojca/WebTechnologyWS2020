@@ -21,7 +21,15 @@ let ws;
     ws = new WebSocket("ws://localhost:3000");
     ws.onmessage = ({ data }) => {
       //console.log(data);
-      if (data === "New user has joined the chat" || data === "close") {
+    
+      if (
+        data === "New user has joined the chat" ||
+        data === "close" ||
+        data.includes("png")  ||
+        data.includes("jpg")||
+        data.includes("jpeg")  ||
+        data.includes("svg") 
+      ) {
         return;
       }
       if (data === "true" || data === "false") {

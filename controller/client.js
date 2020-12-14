@@ -16,6 +16,16 @@
 
   let ws;
   function showMessage(message) {
+    if (
+      message.includes("png") ||
+      message.includes("jpg") ||
+      message.includes("jpeg") ||
+      message.includes("svg")
+    ) {
+      showPictureInChat(message);
+      return;
+    }
+
     if (message === "New user has joined the chat") {
       showNewUser();
       return;
@@ -26,6 +36,7 @@
       return;
     }
     const img = document.createElement("img");
+    img.classList.add("avatar");
     img.src = "./assets/imgs/pic.png";
     img.alt = "Avatar";
     img.width = 32;
@@ -59,6 +70,74 @@
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
+  function showPictureInChat(img_src) {
+    const img = document.createElement("img");
+    img.classList.add("avatar");
+    img.src = "./assets/imgs/pic.png";
+    img.alt = "Avatar";
+    img.width = 32;
+    img.height = 32;
+
+    let image_name = img_src.slice(22, img_src.length);
+
+    const chat_img = document.createElement("img");
+    chat_img.classList.add("chat-img");
+    chat_img.src = image_name;
+    chat_img.alt = "Uploaded";
+    chat_img.width = 180;
+    chat_img.height = 120;
+  
+
+    const span = document.createElement("span");
+    span.classList.add("chat-time");
+    span.innerText = new Date().toLocaleTimeString().substring(0, 4);
+
+    const header = document.createElement("h5");
+    header.innerText = "Random User";
+
+    const div_chatmsg = document.createElement("div");
+    div_chatmsg.classList.add("chat-message-content");
+    div_chatmsg.classList.add("clearfix");
+    div_chatmsg.appendChild(span);
+    div_chatmsg.appendChild(header);
+    div_chatmsg.appendChild(chat_img);
+
+    const div_msg = document.createElement("div");
+    div_msg.classList.add("chat-message");
+    div_msg.classList.add("clearfix");
+    div_msg.appendChild(img);
+    div_msg.appendChild(div_chatmsg);
+    const hr = document.createElement("hr");
+    document.querySelector(".chat-history").appendChild(div_msg);
+    document.querySelector(".chat-history").appendChild(hr);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    const modal_div = document.createElement("div");
+    modal_div.classList.add("modal");
+    modal_div.id = "myModal";
+    console.log(modal_div);
+
+    const close_span = document.createElement("span");
+    close_span.classList.add("close");
+    close_span.innerHTML = "&times;";
+    
+
+    const full_img = document.createElement("img");
+    full_img.classList.add("modal-content");
+    full_img.id = "img01";
+
+    modal_div.appendChild(close_span);
+    modal_div.appendChild(full_img);
+    document.querySelector("#live-chat").appendChild(modal_div);
+    chat_img.onclick = function() {
+      modal_div.style.display = "block";
+      full_img.src = this.src;
+    }
+    close_span.onclick = function() {
+      modal_div.style.display = "none";
+    }
+  }
+
   function init() {
     if (ws) {
       ws.onerror = ws.onopen = ws.onclose = null;
@@ -71,7 +150,11 @@
       showNewUser();
     };
     ws.onmessage = ({ data }) => {
-      if (data.includes("offsetX") || data.includes("true") || data.includes("false")) {
+      if (
+        data.includes("offsetX") ||
+        data.includes("true") ||
+        data.includes("false")
+      ) {
         return;
       }
       showMessage(data);
@@ -153,7 +236,6 @@ function addFilesAndSubmit(event) {
   submitFilesForm(document.getElementById("filesfrm"));
 }
 function submitFilesForm(form) {
-
   document.getElementById("filesfrm").style.visibility = "hidden";
 
   var label = document.getElementById("fileslbl");
@@ -169,13 +251,13 @@ function submitFilesForm(form) {
     x.upload.addEventListener("progress", function (event) {
       var percentage = parseInt((event.loaded / event.total) * 100);
       //progress.innerText = progress.style.width = percentage + "%";
-      progress.style.display = 'block'; //'hidden'
+      progress.style.display = "block"; //'hidden'
     });
   }
   x.onreadystatechange = function () {
     if (x.readyState == 4) {
       //progress.innerText = progress.style.width = "";
-      progress.style.display = 'none';
+      progress.style.display = "none";
       form.filesfld.value = "";
       dragLeave(label); // this will reset the text and styling of the drop zone
       if (x.status == 200) {
@@ -183,7 +265,8 @@ function submitFilesForm(form) {
         for (var i = 0; i < images.length; i++) {
           var img = document.createElement("img");
           img.src = images[i];
-          document.body.appendChild(img);
+          ws.send(img.src);
+          //document.body.appendChild(img);
         }
       } else {
         // failed - TODO: Add code to handle server errors

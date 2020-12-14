@@ -1,12 +1,12 @@
 
-const Sequelize = require('sequelize');
+/*const Sequelize = require('sequelize');
 var db = require('../model/db');
 db.sequelize.sync();
 
 var message = require('../model/message')(db.sequelize, Sequelize.DataTypes)
 
 message.sync();
-
+*/
 
 var usersController={
     uploadImage(request,response){
