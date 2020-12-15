@@ -19,6 +19,30 @@ let ws;
 
   function init() {
     ws = new WebSocket("ws://localhost:3000");
+
+    $('#red').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#pink').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#fuchsia').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#orange').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#yellow').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#lime').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#green').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#blue').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#purple').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#black').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+     $('#white').get(0).addEventListener('click', function(e) { 
+      onColorClick(e.target.id); }, false);
+      
     ws.onmessage = ({ data }) => {
       //console.log(data);
     
@@ -87,3 +111,24 @@ var disengage = function () {
 canvas.addEventListener("mousedown", engage);
 canvas.addEventListener("mousemove", putPoint);
 canvas.addEventListener("mouseup", disengage);
+
+function onColorClick(color) {
+  // Start a new path to begin drawing in a new color.
+  context.closePath();
+  context.beginPath();
+
+  // Select the new color.
+  context.strokeStyle = color;
+
+  // Highlight selected color.
+  var borderColor = 'white';
+  if (color == 'white' || color == 'yellow') {
+      borderColor = 'black';
+  }
+
+  $('#' + lastColor).css("border", "0px dashed white");
+  $('#' + color).css("border", "1px dashed " + borderColor);
+
+  // Store color so we can un-highlight it next time around.
+  lastColor = color;
+}
