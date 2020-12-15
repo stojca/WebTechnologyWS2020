@@ -228,45 +228,34 @@ function dragLeave(label) {
   for (var i = 0; i < len; i++) {
     label.style[label.style[i]] = "";
   }
-  label.innerText = "Click to choose images or drag-n-drop them here";
 }
 function addFilesAndSubmit(event) {
   var files = event.target.files || event.dataTransfer.files;
-  document.getElementById("filesfld").files = files;
-  submitFilesForm(document.getElementById("filesfrm"));
+
+  document.getElementById("submit-form").filesfld = document.getElementById("chat-history");
+  document.getElementById("submit-form").filesfld.files = files;
+
+  submitFilesForm(document.getElementById("submit-form"));
 }
 function submitFilesForm(form) {
-  document.getElementById("filesfrm").style.visibility = "hidden";
 
-  var label = document.getElementById("fileslbl");
-  dragOver(label, "Uploading images..."); // set the drop zone text and styling
   var fd = new FormData();
   for (var i = 0; i < form.filesfld.files.length; i++) {
     var field = form.filesfld;
     fd.append(field.name, field.files[i], field.files[i].name);
   }
-  var progress = document.getElementById("progress");
+
   var x = new XMLHttpRequest();
-  if (x.upload) {
-    x.upload.addEventListener("progress", function (event) {
-      var percentage = parseInt((event.loaded / event.total) * 100);
-      //progress.innerText = progress.style.width = percentage + "%";
-      progress.style.display = "block"; //'hidden'
-    });
-  }
+
   x.onreadystatechange = function () {
     if (x.readyState == 4) {
-      //progress.innerText = progress.style.width = "";
-      progress.style.display = "none";
       form.filesfld.value = "";
-      dragLeave(label); // this will reset the text and styling of the drop zone
       if (x.status == 200) {
         var images = JSON.parse(x.responseText);
         for (var i = 0; i < images.length; i++) {
           var img = document.createElement("img");
           img.src = images[i];
           ws.send(img.src);
-          //document.body.appendChild(img);
         }
       } else {
         // failed - TODO: Add code to handle server errors

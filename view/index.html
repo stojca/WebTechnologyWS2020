@@ -20,46 +20,35 @@
 
 
     <div id="live-chat">
-        <header id="header_chat" class="clearfix" onclick="hideDragAndDrop()">
+        <header id="header_chat" class="clearfix">
             <h4>Random User</h4>
         </header>
         <div class="chat">
 
-            <div class="chat-history">
+            <div class="chat-history"
+            ondragover="stopDefault(event);dragOver(this, '');"
+            ondragenter="stopDefault(event);dragOver(this, '');"
+            ondragleave="stopDefault(event);dragLeave(this);"
+            ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">
                 <div class="d-flex justify-content-center">
-
-                    <div id="progress" class="spinner-border" role="status" style="display: none; z-index: 1000">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-
                 </div>
             </div>
             <hr>
 
-            <form id="submit-form">
+            <form id="submit-form" action="/user/upload" method="post" onsubmit="return submitFilesForm(this);">
+                <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
+                    multiple />
                 <fieldset>
                     <input id="msg-input" type="text" placeholder="Enter a message..." autofocus>
                     <input type="hidden">
                     <i id="send" class="fas fa-share send"></i>
-                    <i class="fa fa-image" onclick="showDragAndDropWindos()"></i>
+                <label class="fa fa-image" for="filesfld" id="fileslbl"></label>
                     <i class="fas fa-map-marker-alt"></i>
                 </fieldset>
             </form>
-
         </div>
     </div>
 
-
-    <form id="filesfrm" action="/user/upload" method="post" onsubmit="return submitFilesForm(this);" style="visibility:hidden;">
-        <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
-            multiple />
-        <label for="filesfld" id="fileslbl"
-            ondragover="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
-            ondragenter="stopDefault(event);dragOver(this, 'Drop the images to upload them.');"
-            ondragleave="stopDefault(event);dragLeave(this);"
-            ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">Click to choose images or drag-n-drop
-            them here</label>
-    </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script type="text/javascript" src="client.js"></script>
