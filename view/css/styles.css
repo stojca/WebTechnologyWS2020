@@ -52,9 +52,10 @@ button {
 }
 
 html, body {
-    height: 100%;
     background: linear-gradient(rgb(70, 67, 94), rgb(59, 57, 79)) rgb(59, 57, 79);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: auto;
     font-family: 'Consolas';
 }
 
@@ -399,3 +400,21 @@ p {
     background-color: rgba(0, 0, 0, 0.9);
     /* Black w/ opacity */
 }
+
+@media only screen and (max-width: 599px){
+    
+ 
+    #canvas {
+        position: absolute;
+        width: 80%;
+        top: 0%;
+        left: 10%;
+    }
+   
+    #live-chat {
+        position: absolute;
+        left: 10%;
+        width: 80%;
+        top: 100%;
+        }
+ }
