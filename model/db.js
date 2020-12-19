@@ -3,7 +3,7 @@ const Promise = require('bluebird')
 
 class DataBase {
     constructor() {
-        this.db = new sqlite3.Database('mydb.db', (err) => {
+        this.db = new sqlite3.Database('draw_db', (err) => {
             if (err) {
                 console.log('Could not connect to database', err)
             } else {

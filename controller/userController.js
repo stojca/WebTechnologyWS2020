@@ -1,5 +1,8 @@
-//var db = require('../model/db_export');
+var db = require('../model/db_export');
+
+//crate db if does not exists
 //db.createTables();
+db.insertIntoTable("prva poruka")
 
 var usersController={
     uploadImage(request,response){
@@ -31,9 +34,8 @@ var usersController={
     },
     postMessage(request, response)
     {
-        console.log("insert into table ")
-         db.insertIntoTable("test222223333");
-         console.log(db.getAll());
+        console.log("create new message")
+        db.insertIntoTable(request.body["message_text"]);
     }
 
 }

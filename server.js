@@ -95,27 +95,4 @@ app.use('/user/',userRoutes);
 app.use(express.static(path.join(__dirname, "view")));
 app.use(express.static(path.join(__dirname, "controller")));
 
-
-//const {upload_photo} = require('./controller/upload')
-
-//upload photo
-// app.post("/upload", function (request, response) {
-//   upload_photo(request,response);
-// });
-
-//message history
-// app.get("/history", function (req, res) {
-//
-//   db.message.findAll().then(function (history) {
-//     res.send(history);
-//   });
-// });
-//
-// app.post("/message", function (req, res) {
-//
-//   message.create({
-//     message_text: req.body["message_text"],
-//   });
-// });
-
 module.exports = app;
