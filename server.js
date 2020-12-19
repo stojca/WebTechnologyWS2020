@@ -3,7 +3,7 @@ const express = require("express");
 const upload = require("express-fileupload");
 const path = require("path");
 const WebSocket = require("ws");
-var userRoutes = require('./router/users')
+//var userRoutes = require('./router/users')
 
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -89,9 +89,12 @@ app.use(express.urlencoded({ extended: false })); // this is to handle URL encod
 app.use(upload());
 
 // enable static files pointing to the folder "view,controller"
+
+var userRoutes = require('./router/users')
+app.use('/user/',userRoutes);
 app.use(express.static(path.join(__dirname, "view")));
 app.use(express.static(path.join(__dirname, "controller")));
-app.use('/user/',userRoutes);
+
 
 //const {upload_photo} = require('./controller/upload')
 

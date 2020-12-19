@@ -1,12 +1,5 @@
-
-/*const Sequelize = require('sequelize');
-var db = require('../model/db');
-db.sequelize.sync();
-
-var message = require('../model/message')(db.sequelize, Sequelize.DataTypes)
-
-message.sync();
-*/
+//var db = require('../model/db_export');
+//db.createTables();
 
 var usersController={
     uploadImage(request,response){
@@ -36,16 +29,11 @@ var usersController={
             response.json(images);
         }, 1000);
     },
-    getHistory(request,response){
-           db.message.findAll().then(function (history) {
-               response.send(history);
-           });
-    },
     postMessage(request, response)
     {
-        message.create({
-            message_text: request.body["message_text"],
-        });
+        console.log("insert into table ")
+         db.insertIntoTable("test222223333");
+         console.log(db.getAll());
     }
 
 }
