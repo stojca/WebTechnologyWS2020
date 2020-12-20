@@ -1,3 +1,5 @@
+text_messages = [];
+
 (function () {
   let user_count = 0;
   $("#live-chat header").on("click", function () {
@@ -35,6 +37,9 @@
       showUserLeft();
       return;
     }
+
+    text_messages.push(message);
+
     const img = document.createElement("img");
     img.classList.add("avatar");
     img.src = "./assets/imgs/pic.png";
@@ -238,7 +243,6 @@ function addFilesAndSubmit(event) {
   submitFilesForm(document.getElementById("submit-form"));
 }
 function submitFilesForm(form) {
-
   var fd = new FormData();
   for (var i = 0; i < form.filesfld.files.length; i++) {
     var field = form.filesfld;
@@ -265,4 +269,51 @@ function submitFilesForm(form) {
   x.open("post", form.action, true);
   x.send(fd);
   return false;
+}
+
+function exportData()
+{
+  if (text_messages.length > 0)
+  {
+    var session_name = prompt("Please enter your chat session name");
+
+    var x = new XMLHttpRequest();
+    var fd = new FormData();
+
+    for(var i = 0; i < text_messages.length; i++)
+    {
+      console.log(text_messages[i])
+      fd.append("message", text_messages[i])
+    }
+
+    fd.append("session_name", session_name);
+
+    x.open("post", "/user/message", true);
+    x.send(fd);
+  }
+  else
+  {
+    alert("There is no messages to export")
+  }
+  return false;
+}
+
+function importChat()
+{
+  var session_name = prompt("Please enter your chat session name");
+  var x = new XMLHttpRequest();
+  var fd = new FormData();
+  console.log(session_name)
+  fd.append("session_name", session_name);
+
+  console.log("import chat")
+  x.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+    }
+  };
+
+  x.open("post", "/user/import_chat", true);
+  x.send(fd);
+
 }

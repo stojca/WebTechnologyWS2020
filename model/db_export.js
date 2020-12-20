@@ -5,20 +5,23 @@ const messageRepository = require('../model/Message')
 //Create db
 const db_dao = new AppDB()
 
-const blogProjectData = {name: 'Write Node.js - SQLite Tutorial'}
 const messageRepo = new messageRepository(db_dao)
 
 var export_db = {
     createTables (){
         messageRepo.createTable();
     },
-    insertIntoTable(message)
+    insertIntoTable(message, session_name)
     {
-        messageRepo.create(message);
+        messageRepo.create(message, session_name);
     },
     getAll()
     {
         messageRepo.getAll();
+    },
+    getChat(session_name)
+    {
+        return messageRepo.getChatsBySessionName(session_name);
     }
 }
 

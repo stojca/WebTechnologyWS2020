@@ -7,15 +7,15 @@ class MessageRepository {
         const sql = `
             CREATE TABLE IF NOT EXISTS messages (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
-              new_message TEXT)`
+              new_message TEXT[],
+              session_name TEXT)`
         return this.dao.run(sql)
     }
 
-    create(new_message) {
-        console.log("inesert new " + new_message)
+    create(new_message, session_name) {
         return this.dao.run(
-            'INSERT INTO messages (new_message) VALUES (?)',
-            [new_message])
+            'INSERT INTO messages (new_message, session_name) VALUES (?,?)',
+            [new_message, session_name])
     }
 
     update(project) {
@@ -41,6 +41,12 @@ class MessageRepository {
 
     getAll() {
         return this.dao.all(`SELECT * FROM messages`)
+    }
+
+    getChatsBySessionName(session_name)
+    {
+        return this.dao.all(`SELECT new_message FROM messages where session_name = ?`,
+            [session_name])
     }
 }
 

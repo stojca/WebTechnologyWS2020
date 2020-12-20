@@ -29,14 +29,6 @@ const server = http.createServer(app);
 //web socket server
 const wss = new WebSocket.Server({ server });
 
-// const Sequelize = require('sequelize');
-// const db = require('./model/db.js');
-// db.sequelize.sync();
-//
-// const message = require(path.join(__dirname, './model/message.js'))(db.sequelize, Sequelize.DataTypes)
-//
-// message.sync();
-
 const errorHandler = (error) => {
   if (error.syscall !== "listen") {
     throw error;

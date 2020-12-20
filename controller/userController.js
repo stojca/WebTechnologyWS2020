@@ -2,7 +2,6 @@ var db = require('../model/db_export');
 
 //crate db if does not exists
 //db.createTables();
-db.insertIntoTable("prva poruka")
 
 var usersController={
     uploadImage(request,response){
@@ -34,8 +33,18 @@ var usersController={
     },
     postMessage(request, response)
     {
-        console.log("create new message")
-        db.insertIntoTable(request.body["message_text"]);
+        db.insertIntoTable(request.body["message"], request.body["session_name"]);
+
+        setTimeout(function () {
+            response.json(request.body["message"]);
+        }, 1000);
+    },
+    importChat(request, response)
+    {
+        setTimeout(function () {
+            response.json(db.getChat(request.body["session_name"]));
+        }, 1000);
+
     }
 
 }

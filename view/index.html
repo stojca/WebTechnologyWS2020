@@ -66,16 +66,29 @@
                 <fieldset>
                     <input id="msg-input" type="text" placeholder="Enter a message..." autofocus>
                     <input type="hidden">
-                    <i id="send" class="fas fa-share send"></i>
-                <label class="fa fa-image" for="filesfld" id="fileslbl"></label>
-                    <i class="fas fa-map-marker-alt"></i>
+                    <a title="Send message" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                        <i id="send" class="fas fa-share send"></i>
+                    </a>
+                    <a title="Add new image" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                        <label class="fa fa-image" for="filesfld" id="fileslbl"></label>
+                    </a>
+                    <a title="Send your location" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                         <i class="fas fa-map-marker-alt"></i>
+                    </a>
+                    <a title="Export chat" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                        <i class="fa fa-file" action="/user/message" method="post" onclick="exportData()"></i>
+                    </a>
+                    <a title="Import chat" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                        <i class="fas fa-comment" action="/user/import_chat" method="get" onclick="importChat()"></i>
+                    </a>
                 </fieldset>
             </form>
         </div>
     </div>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script type="text/javascript" src="client.js"></script>
     <script type="text/javascript" src="DrawController.js"></script>
 
