@@ -8,16 +8,18 @@ class MessageRepository {
             CREATE TABLE IF NOT EXISTS messages (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               new_message TEXT[],
-              session_name TEXT)`
+              session_name TEXT,
+              message_reference TEXT)`
         return this.dao.run(sql)
     }
 
-    create(new_message, session_name) {
+    create(new_message, session_name, message_reference) {
         return this.dao.run(
-            'INSERT INTO messages (new_message, session_name) VALUES (?,?)',
-            [new_message, session_name])
+            'INSERT INTO messages (new_message, session_name, message_reference) VALUES (?,?,?)',
+            [new_message, session_name, message_reference])
     }
 
+    //not used
     update(project) {
         const { id, new_message } = project
         return this.dao.run(
@@ -26,6 +28,7 @@ class MessageRepository {
         )
     }
 
+    //not used
     delete(id) {
         return this.dao.run(
             `DELETE FROM messages WHERE id = ?`,
@@ -33,21 +36,17 @@ class MessageRepository {
         )
     }
 
-    getById(id) {
+    getChatsBySessionName(session_name) {
         return this.dao.get(
-            `SELECT * FROM messages WHERE id = ?`,
-            [id])
+            `SELECT * FROM messages WHERE session_name = ?`,
+            [session_name])
     }
 
+    //not used
     getAll() {
         return this.dao.all(`SELECT * FROM messages`)
     }
 
-    getChatsBySessionName(session_name)
-    {
-        return this.dao.all(`SELECT new_message FROM messages where session_name = ?`,
-            [session_name])
-    }
 }
 
 module.exports = MessageRepository;

@@ -1,10 +1,19 @@
-var db = require('../model/db_export');
+const AppDB = require('../model/db')
+const messageRepository = require('../model/Message')
 
-//crate db if does not exists
-//db.createTables();
+//Create db
+const db_dao = new AppDB()
+
+const messageRepo = new messageRepository(db_dao)
+
+//crate db if does not exists--uncomment it if you don't have draw_db locally
+//messageRepo.createTable();
 
 var usersController={
     uploadImage(request,response){
+
+        console.log("upload new image")
+
         var images = new Array();
         if (request.files) {
             var arr;
@@ -33,17 +42,29 @@ var usersController={
     },
     postMessage(request, response)
     {
-        db.insertIntoTable(request.body["message"], request.body["session_name"]);
+        //crate db if does not exists
+        messageRepo.createTable();
 
+        messageRepo.create(request.body["message"], request.body["session_name"], request.body["message_reference"])
         setTimeout(function () {
             response.json(request.body["message"]);
         }, 1000);
     },
     importChat(request, response)
     {
-        setTimeout(function () {
-            response.json(db.getChat(request.body["session_name"]));
-        }, 1000);
+        //crate db if does not exists
+        messageRepo.createTable();
+
+        messageRepo.getChatsBySessionName(request.body["session_name"]).then((project) => {
+            console.log(`\nRetreived project from database`)
+            console.log(`project id = ${project.id}`)
+            console.log(`project name = ${project.new_message}`)
+            console.log(`image reference = ${project.message_reference}`)
+
+            setTimeout(function () {
+                response.json(project.new_message);
+            }, 1000);
+        })
 
     }
 

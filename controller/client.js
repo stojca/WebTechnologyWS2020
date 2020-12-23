@@ -1,4 +1,6 @@
 text_messages = [];
+image_messages = [];
+const chatMessages2 = document.querySelector(".chat-history");
 
 (function () {
   let user_count = 0;
@@ -76,6 +78,7 @@ text_messages = [];
   }
 
   function showPictureInChat(img_src) {
+    console.log("img_src " + img_src)
     const img = document.createElement("img");
     img.classList.add("avatar");
     img.src = "./assets/imgs/pic.png";
@@ -247,6 +250,7 @@ function submitFilesForm(form) {
   for (var i = 0; i < form.filesfld.files.length; i++) {
     var field = form.filesfld;
     fd.append(field.name, field.files[i], field.files[i].name);
+    image_messages.push("http://localhost:3000/" + field.files[i].name)
   }
 
   var x = new XMLHttpRequest();
@@ -273,7 +277,7 @@ function submitFilesForm(form) {
 
 function exportData()
 {
-  if (text_messages.length > 0)
+  if (text_messages.length > 0 || image_messages.length > 0)
   {
     var session_name = prompt("Please enter your chat session name");
 
@@ -284,6 +288,12 @@ function exportData()
     {
       console.log(text_messages[i])
       fd.append("message", text_messages[i])
+    }
+
+    for(var i = 0; i < image_messages.length; i++)
+    {
+      console.log(image_messages[i])
+      fd.append("message_reference", image_messages[i])
     }
 
     fd.append("session_name", session_name);
@@ -309,7 +319,17 @@ function importChat()
   console.log("import chat")
   x.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
+      console.log("in response: ")
       console.log(this.responseText);
+      console.log(this.responseText.length);
+
+
+      messages = makeArrayOfMessagesFromExport(this.responseText);
+      for(var i = 0; i < messages.length; i++)
+        showMessagesFromImport(messages[i]);
+
+      //showPicturesFromExport(this.responseText.slice(0, this.responseText - 2));
+
     }
   };
 
@@ -317,3 +337,155 @@ function importChat()
   x.send(fd);
 
 }
+
+function makeArrayOfMessagesFromExport(message)
+{
+  messages = [];
+  message = message.slice(1, message.length);
+  console.log(message);
+  temp_message = '';
+  for(var i = 0; i < message.length; i++)
+  {
+
+    if(message[i] == "," || i == message.length - 1)
+    {
+      console.log(temp_message);
+      messages.push(temp_message);
+      temp_message = '';
+    }
+    else
+    {
+      temp_message += message[i];
+    }
+  }
+
+  return messages;
+}
+
+function showMessagesFromImport(message)
+{
+    // if (
+    //     message.includes("png") ||
+    //     message.includes("jpg") ||
+    //     message.includes("jpeg") ||
+    //     message.includes("svg")
+    // ) {
+    //   showPictureInChat(message);
+    //   return;
+    // }
+    //
+    // if (message === "New user has joined the chat") {
+    //   showNewUser();
+    //   return;
+    // }
+    //
+    // if (message === "close") {
+    //   showUserLeft();
+    //   return;
+    // }
+    //
+    // text_messages.push(message);
+
+    const img = document.createElement("img");
+    img.classList.add("avatar");
+    img.src = "./assets/imgs/pic.png";
+    img.alt = "Avatar";
+    img.width = 32;
+    img.height = 32;
+
+    const p = document.createElement("paragraph");
+    p.innerText = message;
+
+    const span = document.createElement("span");
+    span.classList.add("chat-time");
+    span.innerText = new Date().toLocaleTimeString().substring(0, 4);
+
+    const header = document.createElement("h5");
+    header.innerText = "Random User";
+
+    const div_chatmsg = document.createElement("div");
+    div_chatmsg.classList.add("chat-message-content");
+    div_chatmsg.classList.add("clearfix");
+    div_chatmsg.appendChild(span);
+    div_chatmsg.appendChild(header);
+    div_chatmsg.appendChild(p);
+
+    const div_msg = document.createElement("div");
+    div_msg.classList.add("chat-message");
+    div_msg.classList.add("clearfix");
+    div_msg.appendChild(img);
+    div_msg.appendChild(div_chatmsg);
+    const hr = document.createElement("hr");
+    document.querySelector(".chat-history").appendChild(div_msg);
+    document.querySelector(".chat-history").appendChild(hr);
+    chatMessages2.scrollTop = chatMessages2.scrollHeight;
+}
+
+function showPicturesFromExport(img_src) {
+  const img = document.createElement("img");
+  img.classList.add("avatar");
+  img.src = "./assets/imgs/pic.png";
+  img.alt = "Avatar";
+  img.width = 32;
+  img.height = 32;
+
+  let image_name = img_src.slice(22, img_src.length);
+
+  const chat_img = document.createElement("img");
+  chat_img.classList.add("chat-img");
+  chat_img.src = image_name;
+  chat_img.alt = "Uploaded";
+  chat_img.width = 180;
+  chat_img.height = 120;
+
+
+  const span = document.createElement("span");
+  span.classList.add("chat-time");
+  span.innerText = new Date().toLocaleTimeString().substring(0, 4);
+
+  const header = document.createElement("h5");
+  header.innerText = "Random User";
+
+  const div_chatmsg = document.createElement("div");
+  div_chatmsg.classList.add("chat-message-content");
+  div_chatmsg.classList.add("clearfix");
+  div_chatmsg.appendChild(span);
+  div_chatmsg.appendChild(header);
+  div_chatmsg.appendChild(chat_img);
+
+  const div_msg = document.createElement("div");
+  div_msg.classList.add("chat-message");
+  div_msg.classList.add("clearfix");
+  div_msg.appendChild(img);
+  div_msg.appendChild(div_chatmsg);
+  const hr = document.createElement("hr");
+  document.querySelector(".chat-history").appendChild(div_msg);
+  document.querySelector(".chat-history").appendChild(hr);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  const modal_div = document.createElement("div");
+  modal_div.classList.add("modal");
+  modal_div.id = "myModal";
+  console.log(modal_div);
+
+  const close_span = document.createElement("span");
+  close_span.classList.add("close");
+  close_span.innerHTML = "&times;";
+
+
+  const full_img = document.createElement("img");
+  full_img.classList.add("modal-content");
+  full_img.id = "img01";
+
+  modal_div.appendChild(close_span);
+  modal_div.appendChild(full_img);
+  document.querySelector("#live-chat").appendChild(modal_div);
+  chat_img.onclick = function() {
+    modal_div.style.display = "block";
+    full_img.src = this.src;
+  }
+  close_span.onclick = function() {
+    modal_div.style.display = "none";
+  }
+}
+
