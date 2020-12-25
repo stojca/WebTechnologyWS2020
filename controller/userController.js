@@ -56,14 +56,25 @@ var usersController={
         messageRepo.createTable();
 
         messageRepo.getChatsBySessionName(request.body["session_name"]).then((project) => {
-            console.log(`\nRetreived project from database`)
-            console.log(`project id = ${project.id}`)
-            console.log(`project name = ${project.new_message}`)
-            console.log(`image reference = ${project.image_reference}`)
+            try
+            {
+                console.log(`\nRetreived project from database`)
+                console.log(`project id = ${project.id}`)
+                console.log(`project name = ${project.new_message}`)
+                console.log(`image reference = ${project.image_reference}`)
 
-            setTimeout(function () {
-                response.json(project.new_message + "|" + project.image_reference);
-            }, 1000);
+                setTimeout(function () {
+                    response.json(project.new_message + "|" + project.image_reference);
+                }, 1000);
+            }
+            catch (err)
+            {
+                console.log("catch");
+                setTimeout(function () {
+                    response.json("no-response");
+                }, 1000);
+            }
+
         })
 
     }

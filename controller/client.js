@@ -323,28 +323,32 @@ function importChat()
       console.log("in response: ");
       console.log(this.responseText);
 
-      imported_message = this.responseText.substring(0, this.responseText.indexOf("|"));
-
-      if(imported_message != "\"null")
+      if(this.responseText != "\"no-response\"")
       {
-        messages = makeArrayOfMessagesFromExport(imported_message);
+        imported_message = this.responseText.substring(0, this.responseText.indexOf("|"));
 
-        for(var i = 0; i < messages.length; i++)
-          showMessagesFromImport(messages[i]);
+        if(imported_message != "\"null")
+        {
+          messages = makeArrayOfMessagesFromExport(imported_message);
+
+          for(var i = 0; i < messages.length; i++)
+            showMessagesFromImport(messages[i]);
+        }
+
+        image_references = this.responseText.substring(this.responseText.indexOf("|") + 1, this.responseText.length);
+        if(image_references != "null\"")
+        {
+          images_to_be_shown = makeArrayOfImagesFromExport(image_references);
+
+          for(var i = 0; i < images_to_be_shown.length; i++)
+            showPicturesFromExport(images_to_be_shown[i]);
+
+        }
       }
-
-
-      image_references = this.responseText.substring(this.responseText.indexOf("|") + 1, this.responseText.length);
-      if(image_references != "null\"")
+      else
       {
-        console.log("image_ref " + image_references);
-        images_to_be_shown = makeArrayOfImagesFromExport(image_references);
-
-        for(var i = 0; i < images_to_be_shown.length; i++)
-          showPicturesFromExport(images_to_be_shown[i]);
-
+        alert("Please provide existing session name")
       }
-
     }
   };
 
@@ -366,14 +370,12 @@ function makeArrayOfImagesFromExport(image)
   {
     if(image[i] == ",")
     {
-      console.log("1 " + temp_image);
       images.push(temp_image);
       temp_image = '';
     }
     else if(i == image.length - 1)
     {
       temp_image += image[i];
-      console.log("2 " + temp_image);
       images.push(temp_image);
     }
     else
@@ -414,28 +416,6 @@ function makeArrayOfMessagesFromExport(message)
 
 function showMessagesFromImport(message)
 {
-    // if (
-    //     message.includes("png") ||
-    //     message.includes("jpg") ||
-    //     message.includes("jpeg") ||
-    //     message.includes("svg")
-    // ) {
-    //   showPictureInChat(message);
-    //   return;
-    // }
-    //
-    // if (message === "New user has joined the chat") {
-    //   showNewUser();
-    //   return;
-    // }
-    //
-    // if (message === "close") {
-    //   showUserLeft();
-    //   return;
-    // }
-    //
-    // text_messages.push(message);
-
     const img = document.createElement("img");
     img.classList.add("avatar");
     img.src = "./assets/imgs/pic.png";
@@ -472,7 +452,6 @@ function showMessagesFromImport(message)
 }
 
 function showPicturesFromExport(img_src) {
-
 
   const img = document.createElement("img");
   img.classList.add("avatar");
@@ -540,4 +519,7 @@ function showPicturesFromExport(img_src) {
     modal_div.style.display = "none";
   }
 }
+
+
+
 
