@@ -7,7 +7,7 @@ const db_dao = new AppDB()
 const messageRepo = new messageRepository(db_dao)
 
 //crate db if does not exists--uncomment it if you don't have draw_db locally
-//messageRepo.createTable();
+messageRepo.createTable();
 
 var usersController={
     uploadImage(request,response){
@@ -45,7 +45,7 @@ var usersController={
         //crate db if does not exists
         messageRepo.createTable();
 
-        messageRepo.create(request.body["message"], request.body["session_name"], request.body["message_reference"])
+        messageRepo.create(request.body["message"], request.body["session_name"], request.body["image_reference"])
         setTimeout(function () {
             response.json(request.body["message"]);
         }, 1000);
@@ -59,10 +59,10 @@ var usersController={
             console.log(`\nRetreived project from database`)
             console.log(`project id = ${project.id}`)
             console.log(`project name = ${project.new_message}`)
-            console.log(`image reference = ${project.message_reference}`)
+            console.log(`image reference = ${project.image_reference}`)
 
             setTimeout(function () {
-                response.json(project.new_message);
+                response.json(project.new_message + "|" + project.image_reference);
             }, 1000);
         })
 

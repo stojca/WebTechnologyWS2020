@@ -9,14 +9,14 @@ class MessageRepository {
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               new_message TEXT[],
               session_name TEXT,
-              message_reference TEXT)`
+              image_reference TEXT)`
         return this.dao.run(sql)
     }
 
-    create(new_message, session_name, message_reference) {
+    create(new_message, session_name, image_reference) {
         return this.dao.run(
-            'INSERT INTO messages (new_message, session_name, message_reference) VALUES (?,?,?)',
-            [new_message, session_name, message_reference])
+            'INSERT INTO messages (new_message, session_name, image_reference) VALUES (?,?,?)',
+            [new_message, session_name, image_reference])
     }
 
     //not used

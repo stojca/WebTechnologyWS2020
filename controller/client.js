@@ -24,7 +24,8 @@ const chatMessages2 = document.querySelector(".chat-history");
       message.includes("png") ||
       message.includes("jpg") ||
       message.includes("jpeg") ||
-      message.includes("svg")
+      message.includes("svg")  ||
+        message.includes("PNG")
     ) {
       showPictureInChat(message);
       return;
@@ -293,7 +294,7 @@ function exportData()
     for(var i = 0; i < image_messages.length; i++)
     {
       console.log(image_messages[i])
-      fd.append("message_reference", image_messages[i])
+      fd.append("image_reference", image_messages[i])
     }
 
     fd.append("session_name", session_name);
@@ -319,16 +320,30 @@ function importChat()
   console.log("import chat")
   x.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      console.log("in response: ")
+      console.log("in response: ");
       console.log(this.responseText);
-      console.log(this.responseText.length);
+
+      imported_message = this.responseText.substring(0, this.responseText.indexOf("|"));
+
+      if(imported_message != "\"null")
+      {
+        messages = makeArrayOfMessagesFromExport(imported_message);
+
+        for(var i = 0; i < messages.length; i++)
+          showMessagesFromImport(messages[i]);
+      }
 
 
-      messages = makeArrayOfMessagesFromExport(this.responseText);
-      for(var i = 0; i < messages.length; i++)
-        showMessagesFromImport(messages[i]);
+      image_references = this.responseText.substring(this.responseText.indexOf("|") + 1, this.responseText.length);
+      if(image_references != "null\"")
+      {
+        console.log("image_ref " + image_references);
+        images_to_be_shown = makeArrayOfImagesFromExport(image_references);
 
-      //showPicturesFromExport(this.responseText.slice(0, this.responseText - 2));
+        for(var i = 0; i < images_to_be_shown.length; i++)
+          showPicturesFromExport(images_to_be_shown[i]);
+
+      }
 
     }
   };
@@ -338,20 +353,55 @@ function importChat()
 
 }
 
+function makeArrayOfImagesFromExport(image)
+{
+
+  images = [];
+  image = image.slice(0, image.length - 1);
+
+  temp_image = '';
+
+  console.log("iamge " + image)
+  for(var i = 0; i < image.length; i++)
+  {
+    if(image[i] == ",")
+    {
+      console.log("1 " + temp_image);
+      images.push(temp_image);
+      temp_image = '';
+    }
+    else if(i == image.length - 1)
+    {
+      temp_image += image[i];
+      console.log("2 " + temp_image);
+      images.push(temp_image);
+    }
+    else
+    {
+      temp_image += image[i];
+    }
+  }
+
+  return images;
+}
+
 function makeArrayOfMessagesFromExport(message)
 {
   messages = [];
   message = message.slice(1, message.length);
-  console.log(message);
+
   temp_message = '';
   for(var i = 0; i < message.length; i++)
   {
-
-    if(message[i] == "," || i == message.length - 1)
+    if(message[i] == ",")
     {
-      console.log(temp_message);
       messages.push(temp_message);
       temp_message = '';
+    }
+    else if(i == message.length - 1)
+    {
+      temp_message += message[i];
+      messages.push(temp_message);
     }
     else
     {
@@ -422,6 +472,8 @@ function showMessagesFromImport(message)
 }
 
 function showPicturesFromExport(img_src) {
+
+
   const img = document.createElement("img");
   img.classList.add("avatar");
   img.src = "./assets/imgs/pic.png";
@@ -461,7 +513,7 @@ function showPicturesFromExport(img_src) {
   const hr = document.createElement("hr");
   document.querySelector(".chat-history").appendChild(div_msg);
   document.querySelector(".chat-history").appendChild(hr);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMessages2.scrollTop = chatMessages2.scrollHeight;
 
   const modal_div = document.createElement("div");
   modal_div.classList.add("modal");
