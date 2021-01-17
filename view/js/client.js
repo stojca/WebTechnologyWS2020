@@ -18,7 +18,8 @@ const chatMessages2 = document.querySelector(".chat-history");
   const message = document.querySelector("#msg-input");
   const chatMessages = document.querySelector(".chat-history");
 
-  let ws;
+    let ws;
+
   function showMessage(message) {
     if (
       message.includes("png") ||
@@ -29,7 +30,12 @@ const chatMessages2 = document.querySelector(".chat-history");
     ) {
       showPictureInChat(message);
       return;
-    }
+      }
+
+      if (message.includes("google.at/maps")) {
+         sendGeoLocation(message);
+         return;
+      }
 
     if (message === "New user has joined the chat") {
       showNewUser();
@@ -275,6 +281,107 @@ function submitFilesForm(form) {
   x.send(fd);
   return false;
 }
+
+
+var x = document.getElementById("demo");
+
+function initMap() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+
+function showPosition(position) {
+    //console.log("Latitude: " + position.coords.latitude +
+      //  "<br>Longitude: " + position.coords.longitude);
+    openPosition(position.coords.latitude, position.coords.longitude);
+    
+}
+
+const chatMessagesGEO = document.querySelector(".chat-history");
+
+function sendGeoLocation(locationURLa) {
+
+    console.log(locationURLa);
+   
+
+    var a = document.createElement('a');
+    var linkText = document.createTextNode("My Location");
+    a.appendChild(linkText);
+    a.title = "Clik to see - My Location";
+    a.href = locationURLa;
+    //document.body.appendChild(a);
+
+    
+   
+    const img = document.createElement("img");
+    img.classList.add("avatar");
+    img.src = "./assets/imgs/pic.png";
+    img.alt = "Avatar";
+    img.width = 32;
+    img.height = 32;
+
+    //const p = document.createElement("paragraph");
+    //p.innertext = locationURL;
+
+    const span = document.createElement("span");
+    span.classList.add("chat-time");
+    span.innerText = new Date().toLocaleTimeString().substring(0, 4);
+
+    const header = document.createElement("h5");
+    header.innerText = "Random User";
+
+    const div_chatmsg = document.createElement("div");
+    div_chatmsg.classList.add("chat-message-content");
+    div_chatmsg.classList.add("clearfix");
+    div_chatmsg.appendChild(span);
+    div_chatmsg.appendChild(header);
+    div_chatmsg.appendChild(a);
+
+    const div_msg = document.createElement("div");
+    div_msg.classList.add("chat-message");
+    div_msg.classList.add("clearfix");
+    div_msg.appendChild(img);
+    div_msg.appendChild(div_chatmsg);
+    const hr = document.createElement("hr");
+    document.querySelector(".chat-history").appendChild(div_msg);
+    document.querySelector(".chat-history").appendChild(hr);
+    chatMessagesGEO.scrollTop = chatMessagesGEO.scrollHeight;
+}
+
+function linkify(inputText) {
+    var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+    //URLs starting with http://, https://, or ftp://
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+    //Change email addresses to mailto:: links.
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+    return replacedText;
+}
+
+
+function openPosition(latitude, longitude)
+{
+    //Used to open in a new tab 
+    var1 = "https://www.google.at/maps/@";
+    var2 = var1.concat(latitude);
+    var3 = var2.concat(",");
+    res = var3.concat(longitude);
+    ws.send(res);
+   // window.open(res);
+}
+
 
 function exportData()
 {

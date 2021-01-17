@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,79 +13,80 @@
 </head>
 
 <body>
-    <div id = "container">
-        <div  style="padding:5px 0px 0px 0px;">
-            <div id="colorToolbar" style="border: 1px solid black; float: left;"> 
-            <div id="red" style="background:red; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="pink" style="background:pink; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="fuchsia" style="background:fuchsia; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="orange" style="background:orange; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="yellow" style="background:yellow; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="lime" style="background:lime; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="green" style="background:green; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="blue" style="background:blue; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="purple" style="background:purple; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div> 
-            <div id="black" style="background:black; width:50px; height:50px; 
+    <div id="container">
+        <div style="padding:5px 0px 0px 0px;">
+            <div id="colorToolbar" style="border: 1px solid black; float: left;">
+                <div id="red" style="background:red; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="pink" style="background:pink; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="fuchsia" style="background:fuchsia; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="orange" style="background:orange; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="yellow" style="background:yellow; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="lime" style="background:lime; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="green" style="background:green; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="blue" style="background:blue; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="purple" style="background:purple; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+                <div id="black" style="background:black; width:50px; height:50px;
             float:left; border: 1px dashed white;"></div>
-            <div style="clear: both;"></div> 
-            <div id="white" style="background:white; width:50px; height:50px; float:left;"></div>
-            <div style="clear: both;"></div></div>
-        <canvas id="canvas">
+                <div style="clear: both;"></div>
+                <div id="white" style="background:white; width:50px; height:50px; float:left;"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <canvas id="canvas">
             </canvas>
         </div>
 
 
-    <div id="live-chat">
-        <header id="header_chat" class="clearfix">
-            <h4>Random User</h4>
-        </header>
-        <div class="chat">
+        <div id="live-chat">
+            <header id="header_chat" class="clearfix">
+                <h4>Random User</h4>
+            </header>
+            <div class="chat">
 
-            <div class="chat-history"
-            ondragover="stopDefault(event);dragOver(this, '');"
-            ondragenter="stopDefault(event);dragOver(this, '');"
-            ondragleave="stopDefault(event);dragLeave(this);"
-            ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">
-                <div class="d-flex justify-content-center">
+                <div class="chat-history"
+                     ondragover="stopDefault(event);dragOver(this, '');"
+                     ondragenter="stopDefault(event);dragOver(this, '');"
+                     ondragleave="stopDefault(event);dragLeave(this);"
+                     ondrop="stopDefault(event);dragLeave(this);addFilesAndSubmit(event);">
+                    <div class="d-flex justify-content-center">
+                    </div>
                 </div>
-            </div>
-            <hr>
+                <hr>
 
-            <form id="submit-form" action="/user/upload" method="post" onsubmit="return submitFilesForm(this);">
-                <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
-                    multiple />
-                <fieldset>
-                    <input id="msg-input" type="text" placeholder="Enter a message..." autofocus>
-                    <input type="hidden">
-                    <a title="Send message" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                        <i id="send" class="fas fa-share send"></i>
-                    </a>
-                    <a title="Add new image" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                        <label class="fa fa-image" for="filesfld" id="fileslbl"></label>
-                    </a>
-                    <a title="Send your location" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                         <i class="fas fa-map-marker-alt"></i>
-                    </a>
-                    <a title="Export chat" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                        <i class="fa fa-file" action="/user/message" method="post" onclick="exportData()"></i>
-                    </a>
-                    <a title="Import chat" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
-                        <i class="fas fa-comment" action="/user/import_chat" method="post" onclick="importChat()"></i>
-                    </a>
-                </fieldset>
-            </form>
+                <form id="submit-form" action="/user/upload" method="post" onsubmit="return submitFilesForm(this);">
+                    <input type="file" name="filesfld" id="filesfld" accept="image/*" onchange="submitFilesForm(this.form);"
+                           multiple />
+                    <fieldset>
+                        <input id="msg-input" type="text" placeholder="Enter a message..." autofocus>
+                        <input type="hidden">
+                        <a title="Send message" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                            <i id="send" class="fas fa-share send"></i>
+                        </a>
+                        <a title="Add new image" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                            <label class="fa fa-image" for="filesfld" id="fileslbl"></label>
+                        </a>
+                        <a title="Send your location" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                            <i class="fas fa-map-marker-alt" onclick="initMap()"></i>
+                        </a>
+                        <a title="Export chat" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                            <i class="fa fa-file" action="/user/message" method="post" onclick="exportData()"></i>
+                        </a>
+                        <a title="Import chat" style="background-color:#FFFFFF;color:#000000;text-decoration:none">
+                            <i class="fas fa-comment" action="/user/import_chat" method="post" onclick="importChat()"></i>
+                        </a>
+                    </fieldset>
+                </form>
+            </div>
         </div>
     </div>
-
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
