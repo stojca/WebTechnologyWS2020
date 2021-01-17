@@ -1,5 +1,5 @@
 # DrawChat application
-This application is a chat drawing chat application using WebSockets for a bi directional connection.
+This application is a drawing chat application using WebSockets for a bi directional connection.
 
 
 ## Installation
